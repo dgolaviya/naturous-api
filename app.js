@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const xss = require('xss-clean');
+const compression = require('compression');
 const mongoSanitize = require('express-mongo-sanitize');
 
 const tourRouter = require('./routes/tourRouter');
@@ -67,6 +68,8 @@ app.use(
     ],
   })
 );
+//It compresses text or json response
+app.use(compression());
 
 //Test middleware
 app.use((req, res, next) => {

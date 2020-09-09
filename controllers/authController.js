@@ -95,7 +95,7 @@ const protect = catchAsync(async (req, res, next) => {
   }
   //2) Verification of token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  console.log(decoded);
+  // console.log(decoded);
 
   //3) Check if User still exists.
   const currentUser = await User.findById(decoded.id);
@@ -129,7 +129,7 @@ const isLoggedIn = async (req, res, next) => {
         req.cookies.jwt,
         process.env.JWT_SECRET
       );
-      console.log(decoded);
+      // console.log(decoded);
 
       //3) Check if User still exists.
       const currentUser = await User.findById(decoded.id);
