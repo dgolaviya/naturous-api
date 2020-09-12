@@ -4,7 +4,7 @@
   "description": "Learning node express",
   "main": "app.js",
   "scripts": {
-    "start": "SET NODE_ENV=production && node server.js",
+    "start": "node server.js",
     "dev": "nodemon server.js",
     "debug": "ndb server.js",
     "debug:prod": "SET NODE_ENV=production && ndb server.js",
