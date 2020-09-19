@@ -43,5 +43,12 @@ process.on('unhandledRejection', (err) => {
   });
 });
 
+process.on('SIGTERM', () => {
+  console.log('SIGTERM signal recieved, shutting down gracefully');
+  server.close(() => {
+    console.log('Processs terminated !!!');
+  });
+});
+
 //It is throwing sync/uncaught exception which is handled above middleware.
 //console.log(x);

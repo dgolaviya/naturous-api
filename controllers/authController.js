@@ -13,7 +13,7 @@ const signToken = (id) => {
   });
 };
 
-const createAndSendToken = (user, statusCode, res) => {
+const createAndSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
     httponly: true,
@@ -21,7 +21,7 @@ const createAndSendToken = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
   };
-  if (process.env.NODE_ENV === 'production') {
+  if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
     cookieOptions.secure = true;
   }
 
@@ -47,7 +47,7 @@ const signUp = catchAsync(async (req, res, next) => {
   });
   const url = `${req.protocol}://${req.get('host')}/me`;
   await new Email(newUser, url).sendWelcome();
-  createAndSendToken(newUser, 201, res);
+  createAndSendToken(newUser, 201, req, res);
 });
 
 const login = catchAsync(async (req, res, next) => {
@@ -63,7 +63,7 @@ const login = catchAsync(async (req, res, next) => {
   }
 
   //3) If everything ok then Send token to user.
-  createAndSendToken(user, 200, res);
+  createAndSendToken(user, 200, req, res);
 });
 
 const logout = (req, res) => {
@@ -218,7 +218,7 @@ const resetPassword = catchAsync(async (req, res, next) => {
   await user.save();
   // 3) Change password changeAt property
   // 4) If everything ok send token to client.
-  createAndSendToken(user, 200, res);
+  createAndSendToken(user, 200, req, res);
 });
 
 const updateMyPassword = catchAsync(async (req, res, next) => {
@@ -237,7 +237,7 @@ const updateMyPassword = catchAsync(async (req, res, next) => {
 
   //3 If so update password
   //4 login user in, send JWT
-  createAndSendToken(user, 200, res);
+  createAndSendToken(user, 200, req, res);
 });
 
 module.exports = {
