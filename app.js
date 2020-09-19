@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
+const cors = require('cors');
 const hpp = require('hpp');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -29,6 +30,18 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 1) Global Middlewares
+
+//Allowing cross origin requrests by using cors
+app.use(cors());
+//Access-Control-Allow-Origin:*
+//backend: app.naturous.com, FRONT END: naturous.com
+/*app.use(cors({
+  origin: 'https://www.naturous.com'
+})); */
+
+app.options('*', cors());
+// app.options('/api/v1/tours/:id', cors());
+
 //Set Security Http Headers
 app.use(helmet());
 
