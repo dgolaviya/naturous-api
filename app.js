@@ -13,6 +13,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const tourRouter = require('./routes/tourRouter');
 const userRouter = require('./routes/userRouter');
 const bookingRouter = require('./routes/bookingRouter');
+const { webhookCheckout } = require('./controllers/bookingController');
 const reviewRouter = require('./routes/reviewRouter');
 const viewsRouter = require('./routes/viewsRouter');
 
@@ -57,6 +58,8 @@ const limiter = rateLimit({
 });
 
 app.use('/api', limiter);
+
+app.post('webhook-checkout', express.raw(), webhookCheckout);
 
 //Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
